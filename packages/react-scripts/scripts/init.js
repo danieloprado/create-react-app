@@ -128,23 +128,7 @@ module.exports = function(
     console.error(`\`${command} ${args.concat(types).join(' ')}\` failed`);
     return;
   }
-
-  args.push(
-    'react',
-    'react-dom',
-    'react-router-dom',
-    'react-scripts-ts',
-    'material-ui',
-    'material-ui-icons',
-    'material-ui-pickers',
-    'axios',
-    'lodash',
-    'moment',
-    'raven-js',
-    'rxjs',
-    'tslib',
-    'validatorjs',
-  );
+  args.push('react', 'react-dom');
 
   // Install additional template dependencies, if present
   const templateDependenciesPath = path.join(
