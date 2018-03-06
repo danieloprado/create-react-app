@@ -37,10 +37,11 @@ module.exports = function(
 
   // Setup the script rules
   appPackage.scripts = {
-    start: 'react-scripts start',
-    build: 'react-scripts build',
-    test: 'react-scripts test --env=jsdom',
-    eject: 'react-scripts eject',
+    start: 'react-scripts-ts start',
+    build: 'react-scripts-ts build',
+    test: 'react-scripts-ts test --env=jsdom',
+    eject: 'react-scripts-ts eject',
+    'docker-build': 'sh ./scripts/docker-build.sh'
   };
 
   fs.writeFileSync(
@@ -99,7 +100,51 @@ module.exports = function(
     command = 'npm';
     args = ['install', '--save', verbose && '--verbose'].filter(e => e);
   }
-  args.push('react', 'react-dom');
+
+  args.push(
+    'react',
+    'react-dom',
+    'react-router-dom',
+    'react-scripts-ts',
+    'material-ui',
+    'material-ui-icons',
+    'material-ui-pickers',
+    'axios',
+    'lodash',
+    'moment',
+    'raven-js',
+    'rxjs',
+    'tslib',
+    'validatorjs',
+  );
+
+  // Install dev dependencies
+  const types = [
+    '@types/jest',
+    '@types/lodash',
+    '@types/node',
+    '@types/raven-js',
+    '@types/react',
+    '@types/react-dom',
+    '@types/react-router-dom',
+    '@types/validatorjs',
+    'eslint',
+    'eslint-plugin-react',
+    'tslint',
+    'tslint-eslint-rules',
+    'typescript',
+  ];
+
+  console.log(`Installing ${types.join(', ')} as dev dependencies ${command}...`);
+  console.log();
+
+  const devProc = spawn.sync(command, args.concat('-D').concat(types), {
+    stdio: 'inherit',
+  });
+  if (devProc.status !== 0) {
+    console.error(`\`${command} ${args.concat(types).join(' ')}\` failed`);
+    return;
+  }
 
   // Install additional template dependencies, if present
   const templateDependenciesPath = path.join(
