@@ -153,15 +153,6 @@ module.exports = function(
     return;
   }
 
-  console.log(`Removing unnecessary dependencies using ${command}...`);
-  console.log();
-
-  const proc = spawn.sync(command, ['remove','--save','react-scripts-enterprise'], { stdio: 'inherit' });
-  if (proc.status !== 0) {
-    console.error(`\`${command} ${args.join(' ')}\` failed`);
-    return;
-  }
-
   // Display the most elegant way to cd.
   // This needs to handle an undefined originalDirectory for
   // backward compatibility with old global-cli's.
