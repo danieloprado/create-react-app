@@ -101,23 +101,6 @@ module.exports = function(
     args = ['install', '--save', verbose && '--verbose'].filter(e => e);
   }
 
-  args.push(
-    'react',
-    'react-dom',
-    'react-router-dom',
-    'react-scripts-ts',
-    'material-ui',
-    'material-ui-icons',
-    'material-ui-pickers',
-    'axios',
-    'lodash',
-    'moment',
-    'raven-js',
-    'rxjs',
-    'tslib',
-    'validatorjs',
-  );
-
   // Install dev dependencies
   const types = [
     '@types/jest',
@@ -145,6 +128,23 @@ module.exports = function(
     console.error(`\`${command} ${args.concat(types).join(' ')}\` failed`);
     return;
   }
+
+  args.push(
+    'react',
+    'react-dom',
+    'react-router-dom',
+    'react-scripts-ts',
+    'material-ui',
+    'material-ui-icons',
+    'material-ui-pickers',
+    'axios',
+    'lodash',
+    'moment',
+    'raven-js',
+    'rxjs',
+    'tslib',
+    'validatorjs',
+  );
 
   // Install additional template dependencies, if present
   const templateDependenciesPath = path.join(
