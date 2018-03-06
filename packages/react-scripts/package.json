@@ -1,7 +1,7 @@
 {
   "name": "react-scripts-enterprise",
   "version": "0.0.1",
-  "description": "Configuration and scripts for Create React App.",
+  "description": "Enterprise Configuration and scripts for Create React App.",
   "repository": "https://github.com/danieloprado/react-scripts-enterprise",
   "license": "MIT",
   "author": {
