@@ -41,7 +41,7 @@ export default class AppRouterProtected extends BaseComponent<IState, IProps> {
 
   public render(): JSX.Element {
     const { loading, canAccess } = this.state;
-    const { route, routeProps } = this.props;
+    const { route, routeProps, children } = this.props;
 
     if (loading) {
       return null;
@@ -51,6 +51,10 @@ export default class AppRouterProtected extends BaseComponent<IState, IProps> {
       return <Redirect to='/' />;
     }
 
-    return <route.component {...routeProps} />;
+    return (
+      <route.component {...routeProps}>
+        {children}
+      </route.component>
+    );
   }
 }

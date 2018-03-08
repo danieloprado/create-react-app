@@ -66,5 +66,5 @@ export function login(email: string, password: string): Observable<void> {
 }
 
 export function logoff(): Observable<void> {
-  return setAccessToken(null).map(() => token$.next(null));
+  return setAccessToken(null);
 }

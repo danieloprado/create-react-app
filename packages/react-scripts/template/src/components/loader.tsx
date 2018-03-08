@@ -31,6 +31,10 @@ export default class LoaderComponent extends BaseComponent<IState> {
     this.state = { refs: [], hide: false };
   }
 
+  componentDidMount() {
+    this.hide();
+  }
+
   public show(ref: string): void {
     if (typeof ref !== 'string') {
       throw new Error('Loader.show needs a ref string value');
@@ -43,10 +47,15 @@ export default class LoaderComponent extends BaseComponent<IState> {
     this.setState({ refs, hide: false });
   }
 
-  public hide(ref: string): void {
-    if (typeof ref !== 'string') {
+  public hide(ref?: string): void {
+    if (ref && typeof ref !== 'string') {
       throw new Error('Loader.hide needs a ref string value');
     }
+
+    setTimeout(() => {
+      if (refs.length) return;
+      this.setState({ hide: true });
+    }, 500);
 
     const { refs } = this.state;
     const index = refs.indexOf(ref);
@@ -54,11 +63,6 @@ export default class LoaderComponent extends BaseComponent<IState> {
 
     refs.splice(index, 1);
     this.setState({ refs });
-
-    setTimeout(() => {
-      if (refs.length) return;
-      this.setState({ hide: true });
-    }, 1000);
   }
 
   render() {

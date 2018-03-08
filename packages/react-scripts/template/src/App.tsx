@@ -8,10 +8,10 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import { setup as setupLoaderOperator } from 'operators/loader';
 import React from 'react';
+import baseRoutes from 'routes';
 import { setupLoginComponent } from 'services/auth';
 import { setup as setupDialogService } from 'services/dialog';
 import { setupGlobalRouter } from 'services/router';
-import { baseRoutes } from 'settings';
 
 const theme = createMuiTheme({
   palette: {

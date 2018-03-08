@@ -29,6 +29,7 @@ export function setUser(user: IUserToken): void {
     id: user.id,
     name: user.fullName,
     email: user.email,
+    church: user.church.slug,
     roles: user.roles.join()
   });
 }

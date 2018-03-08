@@ -5,6 +5,11 @@ export interface IUserToken {
   lastName?: string;
   fullName: string;
   roles: string[];
+  church?: {
+    id: number;
+    name: string;
+    slug: string;
+  };
 
   canAccess(...roles: string[]): boolean;
 }

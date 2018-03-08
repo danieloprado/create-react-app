@@ -66,7 +66,7 @@ export default class AppWrapper extends BaseComponent<IState> {
   render() {
     const { drawerOpened } = this.state;
     const { classes, children } = this.props;
-    const items = <AppDrawer />;
+    const items = <AppDrawer closeDrawer={this.toggleMenu.bind(this)} />;
 
     return (
       <div className={classes.appFrame}>

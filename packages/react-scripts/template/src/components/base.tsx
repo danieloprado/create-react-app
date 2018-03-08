@@ -1,3 +1,4 @@
+import AppRouter from 'components/router';
 import { ChangeEvent, Component, ReactInstance, ReactNode } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Subscription } from 'rxjs';
@@ -28,16 +29,16 @@ export abstract class BaseComponent<S extends IStateBase = any, P = any, R = any
     this.subscriptions = [];
   }
 
+  public get router(): AppRouter {
+    return getGlobalRouter();
+  }
+
   public componentWillUnmount(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   public previousPage() {
     this.props.history.goBack();
-  }
-
-  public navigate(path: string): void {
-    getGlobalRouter().navigate(path);
   }
 
   public setState<K extends keyof S>(f: (prevState: S, props: P) => Pick<S, K>, callback?: () => any): Promise<void>;

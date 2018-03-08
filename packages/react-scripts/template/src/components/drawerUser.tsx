@@ -11,6 +11,10 @@ interface IState extends IStateBase {
   user: IUserToken;
 }
 
+interface IProps {
+  closeDrawer: Function;
+}
+
 @WithStyles(theme => ({
   root: {
     textAlign: 'left',
@@ -21,7 +25,7 @@ interface IState extends IStateBase {
     padding: '15px 15px 0 15px'
   }
 }))
-export default class AppDrawerUser extends BaseComponent<IState> {
+export default class AppDrawerUser extends BaseComponent<IState, IProps> {
   componentWillMount() {
     authService.getUser()
       .logError()
@@ -30,8 +34,10 @@ export default class AppDrawerUser extends BaseComponent<IState> {
   }
 
   logoff() {
+    this.props.closeDrawer();
+
     authService.logoff().subscribe(() => {
-      this.navigate('/');
+      this.router.reload();
     });
   }
 

@@ -35,6 +35,16 @@ module.exports = function(
   // Copy over some of the devDependencies
   appPackage.dependencies = appPackage.dependencies || {};
 
+  // Install additional template dependencies, if present
+  const templateDependenciesPath = path.join(appPath,'.template.dependencies.json');
+
+  if (fs.existsSync(templateDependenciesPath)) {
+    const templateDependencies = require(templateDependenciesPath).dependencies;
+    const templateDevDependencies = require(templateDependenciesPath).devDependencies;
+    appPackage.dependencies = { ...appPackage.dependencies, ...templateDependencies };
+    appPackage.devDependencies = { ...appPackage.devDependencies, ...templateDevDependencies };
+  }
+
   // Setup the script rules
   appPackage.scripts = {
     start: 'react-scripts-ts start',
@@ -61,12 +71,11 @@ module.exports = function(
   const templatePath = template
     ? path.resolve(originalDirectory, template)
     : path.join(ownPath, 'template');
+
   if (fs.existsSync(templatePath)) {
     fs.copySync(templatePath, appPath);
   } else {
-    console.error(
-      `Could not locate supplied template: ${chalk.green(templatePath)}`
-    );
+    console.error(`Could not locate supplied template: ${chalk.green(templatePath)}`);
     return;
   }
 
@@ -95,53 +104,10 @@ module.exports = function(
 
   if (useYarn) {
     command = 'yarnpkg';
-    args = ['add'];
+    args = ['install'];
   } else {
     command = 'npm';
-    args = ['install', '--save', verbose && '--verbose'].filter(e => e);
-  }
-
-  // Install dev dependencies
-  const types = [
-    '@types/jest',
-    '@types/lodash',
-    '@types/node',
-    '@types/raven-js',
-    '@types/react',
-    '@types/react-dom',
-    '@types/react-router-dom',
-    '@types/validatorjs',
-    'eslint',
-    'eslint-plugin-react',
-    'tslint',
-    'tslint-eslint-rules',
-    'typescript',
-  ];
-
-  console.log(`Installing ${types.join(', ')} as dev dependencies ${command}...`);
-  console.log();
-
-  const devProc = spawn.sync(command, args.concat('-D').concat(types), {stdio: 'inherit' });
-  if (devProc.status !== 0) {
-    console.error(`\`${command} ${args.concat(types).join(' ')}\` failed`);
-    return;
-  }
-
-  args.push('react', 'react-dom');
-
-  // Install additional template dependencies, if present
-  const templateDependenciesPath = path.join(
-    appPath,
-    '.template.dependencies.json'
-  );
-  if (fs.existsSync(templateDependenciesPath)) {
-    const templateDependencies = require(templateDependenciesPath).dependencies;
-    args = args.concat(
-      Object.keys(templateDependencies).map(key => {
-        return `${key}@${templateDependencies[key]}`;
-      })
-    );
-    fs.unlinkSync(templateDependenciesPath);
+    args = ['install', verbose && '--verbose'].filter(e => e);
   }
 
   console.log(`Installing dependencies using ${command}...`);
