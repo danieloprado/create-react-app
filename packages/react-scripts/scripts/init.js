@@ -136,8 +136,8 @@ module.exports = function(
 
   command = 'git';
   args = ['init'];
-  const proc = spawn.sync(command, args, { stdio: 'inherit' });
-  if (proc.status !== 0) {
+  const procGit = spawn.sync(command, args, { stdio: 'inherit' });
+  if (procGit.status !== 0) {
     console.error(`\`${command} ${args.join(' ')}\` failed`);
     return;
   }
