@@ -32,9 +32,15 @@ yarn start
 docker-compose up
 ```
 
+### Scripts
+* update-packages:check = Check if there is a package update
+* update-packages:do = Check and change package.json if there is a package update
+* webpack-analyze = Run webpack analyzer
+
 Publish
 -----------
 ```bash
 sh ./scripts/build.sh [-p] #-p for production
 ```
+
 
