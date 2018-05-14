@@ -37,7 +37,8 @@ module.exports = function(
 
   // Install additional template dependencies, if present
   const templateDependenciesPath = path.join(
-    appPath,
+    ownPath,
+    'template',
     '.template.dependencies.json'
   );
   console.log(templateDependenciesPath);
@@ -92,6 +93,8 @@ module.exports = function(
     );
     return;
   }
+
+  fs.unlinkSync(templateDependenciesPath);
 
   // Rename gitignore after the fact to prevent npm from renaming it to .npmignore
   // See: https://github.com/npm/npm/issues/1862
