@@ -36,13 +36,25 @@ module.exports = function(
   appPackage.dependencies = appPackage.dependencies || {};
 
   // Install additional template dependencies, if present
-  const templateDependenciesPath = path.join(appPath,'.template.dependencies.json');
+  const templateDependenciesPath = path.join(
+    appPath,
+    '.template.dependencies.json'
+  );
+  console.log(templateDependenciesPath);
+  console.log(fs.existsSync(templateDependenciesPath));
 
   if (fs.existsSync(templateDependenciesPath)) {
     const templateDependencies = require(templateDependenciesPath).dependencies;
-    const templateDevDependencies = require(templateDependenciesPath).devDependencies;
-    appPackage.dependencies = { ...appPackage.dependencies, ...templateDependencies };
-    appPackage.devDependencies = { ...appPackage.devDependencies, ...templateDevDependencies };
+    const templateDevDependencies = require(templateDependenciesPath)
+      .devDependencies;
+    appPackage.dependencies = {
+      ...appPackage.dependencies,
+      ...templateDependencies,
+    };
+    appPackage.devDependencies = {
+      ...appPackage.devDependencies,
+      ...templateDevDependencies,
+    };
   }
 
   // Setup the script rules
@@ -51,7 +63,7 @@ module.exports = function(
     build: 'react-scripts-ts build',
     test: 'react-scripts-ts test --env=jsdom',
     eject: 'react-scripts-ts eject',
-    'docker-build': 'sh ./scripts/docker-build.sh'
+    'docker-build': 'sh ./scripts/docker-build.sh',
   };
 
   fs.writeFileSync(
@@ -75,7 +87,9 @@ module.exports = function(
   if (fs.existsSync(templatePath)) {
     fs.copySync(templatePath, appPath);
   } else {
-    console.error(`Could not locate supplied template: ${chalk.green(templatePath)}`);
+    console.error(
+      `Could not locate supplied template: ${chalk.green(templatePath)}`
+    );
     return;
   }
 
