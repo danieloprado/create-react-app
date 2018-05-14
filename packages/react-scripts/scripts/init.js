@@ -58,11 +58,19 @@ module.exports = function(
 
   // Setup the script rules
   appPackage.scripts = {
-    start: 'react-scripts-ts start',
-    build: 'react-scripts-ts build',
+    'start-css': 'yarn node-sass-chokidar src/ -o src/ --watch --recursive',
+    'start-js': 'react-scripts-ts start',
+    prestart: 'yarn build-css',
+    start: 'npm-run-all -p start-css start-js',
+    'build-css': 'yarn node-sass-chokidar src/ -o src/',
+    'build-js': 'react-scripts-ts build',
+    build: 'yarn build-css && yarn build-js',
     test: 'react-scripts-ts test --env=jsdom',
     eject: 'react-scripts-ts eject',
     'docker-build': 'sh ./scripts/docker-build.sh',
+    'update-packages:check': 'ncu',
+    'update-packages:do': 'ncu -u',
+    'webpack-analyze': 'node ./scripts/webpack-analyze.js',
   };
 
   fs.writeFileSync(
