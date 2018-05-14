@@ -41,8 +41,6 @@ module.exports = function(
     'template',
     '.template.dependencies.json'
   );
-  console.log(templateDependenciesPath);
-  console.log(fs.existsSync(templateDependenciesPath));
 
   if (fs.existsSync(templateDependenciesPath)) {
     const templateDependencies = require(templateDependenciesPath).dependencies;
