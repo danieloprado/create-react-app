@@ -92,7 +92,7 @@ module.exports = function(
     return;
   }
 
-  fs.unlinkSync(templateDependenciesPath);
+  fs.unlinkSync(path.join(appPath, '.template.dependencies.json'));
 
   // Rename gitignore after the fact to prevent npm from renaming it to .npmignore
   // See: https://github.com/npm/npm/issues/1862
@@ -128,6 +128,14 @@ module.exports = function(
   console.log(`Installing dependencies using ${command}...`);
   console.log();
 
+  const proc = spawn.sync(command, args, { stdio: 'inherit' });
+  if (proc.status !== 0) {
+    console.error(`\`${command} ${args.join(' ')}\` failed`);
+    return;
+  }
+
+  command = 'git';
+  args = ['init'];
   const proc = spawn.sync(command, args, { stdio: 'inherit' });
   if (proc.status !== 0) {
     console.error(`\`${command} ${args.join(' ')}\` failed`);
