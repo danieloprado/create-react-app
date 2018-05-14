@@ -14,3 +14,12 @@ npx create-react-app my-app --scripts-version=react-scripts-enterprise
 cd my-app/
 npm start
 ```
+
+Technologies
+------------
+* React
+* Redux with Thunk
+* Typescript
+* React Router
+* Validatorjs
+* Material UI (UI Framework)

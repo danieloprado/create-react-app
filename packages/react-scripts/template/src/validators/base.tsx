@@ -1,9 +1,8 @@
-import { Observable } from 'rxjs';
 import validator from 'validatorjs';
 
 export interface IValidatorResult<T> {
   valid: boolean;
-  errors?: { [key: string]: string };
+  errors?: { [key in keyof Partial<T>]: string; };
   model: T;
 }
 
@@ -30,15 +29,15 @@ export abstract class BaseValidator<T> {
     required_if: 'Obrigatório'
   };
 
-  constructor(rules: any) {
+  constructor(rules?: any) {
     this.rules = rules;
   }
 
-  public validate(model: any): Observable<IValidatorResult<T>> {
+  public validate(model: any): Promise<IValidatorResult<T>> {
     const result = new validator(model || {}, this.rules, this.messages);
 
     if (result.passes()) {
-      return Observable.of({ valid: true, model, errors: {} });
+      return Promise.resolve({ valid: true, model, errors: {} as any });
     }
 
     const allErrors = result.errors.all();
@@ -46,6 +45,6 @@ export abstract class BaseValidator<T> {
       acc[key] = allErrors[key][0];
       return acc;
     }, {});
-    return Observable.of({ valid: false, errors, model });
+    return Promise.resolve({ valid: false, errors, model });
   }
 }
