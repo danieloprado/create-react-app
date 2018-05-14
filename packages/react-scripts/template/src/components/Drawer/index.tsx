@@ -1,5 +1,5 @@
+import { RouterContext } from 'App';
 import AppDrawerUser from 'components/Drawer/UserMenu';
-import { RouterContext } from 'components/Root';
 import AppRouter from 'components/Router';
 import { IAppRoute } from 'interfaces/route';
 import { List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
