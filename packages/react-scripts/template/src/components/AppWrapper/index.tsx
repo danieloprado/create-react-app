@@ -1,15 +1,15 @@
+import { Drawer, Hidden } from '@material-ui/core';
 import AppDrawer from 'components/Drawer';
+import { WithStyles } from 'decorators/withStyles';
 import { IAppRoute } from 'interfaces/route';
-import { Drawer, Hidden } from 'material-ui';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { IAppStoreState } from 'store';
 import { closeDrawer } from 'store/actionsCreators';
 
-const styles = require('./index.css');
-
 interface IProps {
   routes: IAppRoute[];
+  classes?: any;
 }
 
 interface IPropsFromConnect {
@@ -17,20 +17,48 @@ interface IPropsFromConnect {
   closeDrawer?: typeof closeDrawer;
 }
 
+@WithStyles(theme => ({
+  root: {
+    position: 'relative',
+    display: 'flex',
+    width: '100vw',
+    height: '100vh'
+  },
+  drawer: {
+    width: theme.variables.drawerWidth,
+    borderRight: 'none !important',
+    boxShadow: `${theme.variables.boxShadow} !important`,
+    [theme.breakpoints.up('md')]: {
+      width: theme.variables.drawerWidth,
+      position: 'relative',
+      height: '100vh'
+    }
+  },
+  content: {
+    backgroundColor: theme.palette.background.default,
+    width: '100vw',
+    height: '100vh',
+    overflow: 'auto',
+    padding: theme.variables.contentPadding,
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.variables.contentPaddingUpSm,
+    }
+  }
+}))
 class AppWrapper extends PureComponent<IProps & IPropsFromConnect> {
   render() {
     const { } = this.state;
-    const { children, routes, drawerOpened, closeDrawer } = this.props;
+    const { children, routes, drawerOpened, closeDrawer, classes } = this.props;
     const items = <AppDrawer routes={routes} closeDrawer={() => closeDrawer()} />;
 
     return (
-      <div className={styles.component}>
-        <Hidden mdUp>
+      <div className={classes.root}>
+        <Hidden mdUp implementation='css'>
           <Drawer
             variant='temporary'
             anchor='left'
             open={drawerOpened}
-            classes={{ paper: styles.drawer }}
+            classes={{ paper: classes.drawer }}
             onClose={() => closeDrawer()}
             ModalProps={{ keepMounted: true }}>
             {items}
@@ -40,11 +68,11 @@ class AppWrapper extends PureComponent<IProps & IPropsFromConnect> {
           <Drawer
             variant='permanent'
             open
-            classes={{ paper: styles.drawer }}>
+            classes={{ paper: classes.drawer }}>
             {items}
           </Drawer>
         </Hidden>
-        <main className='content'>
+        <main className={classes.content}>
           {children}
         </main>
       </div>

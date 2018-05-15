@@ -1,7 +1,8 @@
+import { Button, Card, CardActions, CardContent, Dialog, LinearProgress } from '@material-ui/core';
 import Field from 'components/Field';
 import { FormComponent, IStateForm } from 'components/FormComponent';
 import Snackbar from 'components/Snackbar';
-import { Button, Card, CardActions, CardContent, Dialog, LinearProgress } from 'material-ui';
+import { WithStyles } from 'decorators/withStyles';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { IAppStoreState } from 'store';
@@ -9,10 +10,8 @@ import { clearLoginError, requestLogin } from 'store/actionsCreators';
 
 import LoginValidator from './validator';
 
-const styles = require('./index.css');
-
 interface IState extends IStateForm<{
-  email: string;
+  username: string;
   password: string;
 }> { }
 
@@ -22,8 +21,40 @@ interface IPropsFromConnect {
   error?: any;
   requestLogin?: typeof requestLogin;
   clearLoginError?: typeof clearLoginError;
+  classes?: any;
 }
 
+@WithStyles(theme => ({
+  root: {
+    background: theme.palette.primary.main,
+    minHeight: '100vh',
+    minWidth: '100vw',
+    position: 'relative'
+  },
+  container: {
+    position: 'absolute',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+    margin: 'auto',
+    width: '300px',
+    height: '350px',
+    maxWidth: 'calc(100% - 30px)',
+    textAlign: 'center',
+    color: 'white'
+  },
+  logo: {
+    textAlign: 'center'
+  },
+  logoImage: {
+    maxWidth: '120px',
+    marginBottom: '20px'
+  },
+  buttons: {
+    justifyContent: 'space-between'
+  }
+}))
 class LoginDialog extends FormComponent<IPropsFromConnect, IState> {
   validator = new LoginValidator();
 
@@ -47,35 +78,37 @@ class LoginDialog extends FormComponent<IPropsFromConnect, IState> {
     const { model } = this.state;
     const { requestLogin } = this.props;
 
-    await this.isFormValid();
-    requestLogin(model.email, model.password);
+    const isValid = await this.isFormValid();
+    if (!isValid) return;
+
+    requestLogin(model.username, model.password);
   }
 
   render() {
     const { model, formSubmitted } = this.state;
-    const { opened, loading, error, clearLoginError } = this.props;
+    const { opened, loading, error, clearLoginError, classes } = this.props;
 
     return (
       <Dialog fullScreen open={opened}>
         <Snackbar opened={!!error} error={error} onClose={() => clearLoginError()} />
 
-        <div className={styles.component}>
-          <form className='container' onSubmit={this.onSubmit.bind(this)}>
-            <div className='logo'>
-              <img src={require('assets/images/logo-white.png')} />
+        <div className={classes.root}>
+          <form className={classes.container} onSubmit={this.onSubmit.bind(this)}>
+            <div className={classes.logo}>
+              <img src={require('assets/images/logo-white.png')} className={classes.logoImage} />
             </div>
 
-            <Card className='card'>
+            <Card>
               <CardContent>
 
                 <Field
                   label='Email'
                   type='email'
                   disabled={loading}
-                  value={model.email}
+                  value={model.username}
                   submitted={formSubmitted}
-                  error={this.getErrorMessage('email')}
-                  onChange={this.updateModel((model, v) => model.email = v)}
+                  error={this.getErrorMessage('username')}
+                  onChange={this.updateModel((model, v) => model.username = v)}
                   margin='none'
                 />
 
@@ -91,7 +124,7 @@ class LoginDialog extends FormComponent<IPropsFromConnect, IState> {
 
               </CardContent>
 
-              <CardActions className='buttons'>
+              <CardActions className={classes.buttons}>
                 <Button disabled={loading} size='small'>Recuperar Acesso</Button>
                 <Button disabled={loading} color='secondary' type='submit'>Entrar</Button>
               </CardActions>

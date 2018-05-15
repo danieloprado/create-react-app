@@ -1,18 +1,14 @@
-import './errorHandler';
-
+import Root from 'App';
 import moment from 'moment';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-
-require('./global.css');
 
 moment.locale('pt-BR');
 
 ReactDOM.render(
-  <App />,
+  <Root />,
   document.getElementById('root') as HTMLElement
 );
 

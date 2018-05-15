@@ -1,8 +1,8 @@
+import { Tab, Tabs } from '@material-ui/core';
 import UserTabAccess from 'components/Pages/User/Tabs/Access';
 import UserTabList from 'components/Pages/User/Tabs/List';
 import Toolbar from 'components/Toolbar';
 import { ToolbarTabs } from 'components/ToolbarTabs';
-import { Tab, Tabs } from 'material-ui';
 import * as React from 'react';
 import { Fragment } from 'react';
 
@@ -30,7 +30,7 @@ export default class UserTabsPage extends React.PureComponent<{}, IState> {
         <ToolbarTabs>
           <Tabs value={currentTab} onChange={this.onTabChange.bind(this)}>
             <Tab label='Lista' />
-            <Tab label='Papeis de Acesso' />
+            <Tab label='Grupos de Acesso' />
           </Tabs>
         </ToolbarTabs>
 
